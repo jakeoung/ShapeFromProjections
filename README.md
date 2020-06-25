@@ -1,6 +1,6 @@
 # Welcome to ctdr
 
-This repository provides the official code for the paper "title" [arxiv](https://) (To be released soon). The method aims to estimate a 3D shape represented by a mesh, directly from tomographic projection data.
+This repository provides the official code for the paper "title" [arxiv](https://) (To be released soon). The method estimates 3D shapes represented by a triangular mesh, directly from tomographic projection data.
 
 ## Install
 
