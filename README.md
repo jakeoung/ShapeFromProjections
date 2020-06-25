@@ -46,7 +46,7 @@ If you want to refine the mesh, as explained in the paper, you can run:
 python ours.py -data 2bob02A -niter0 60
 ```
 
-then, the method will refine the mesh at 60, 120, 180. After finished, the results will be saved on `result` folder, including estimated projections, residuals and mesh files.
+then, the method will refine the mesh at iteration 60, 120, 180. After finished, the results will be saved on `result` folder, including estimated projections, residuals and mesh files.
 
 To run your own data, make a new folder in `data` and upload geometry information as `proj_geom.toml` and projection data file as `sinogram.npy` with the size of [angles x height x width]. You can refer to examples.
 
