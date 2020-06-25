@@ -1,4 +1,4 @@
-# Welcome to ctdr
+# ShapeFromProjections
 
 This repository provides the official code for the paper "title" [arxiv](https://) (To be released soon). The method estimates 3D shapes represented by a triangular mesh, directly from tomographic projection data. The basic idea of the method is to extend a differentiable rasterizer [2] to tomographic reconstruction. Some parts of codes are ported from [2] with the comments of copyright form.
 
