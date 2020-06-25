@@ -1,12 +1,12 @@
 # Welcome to ctdr
 
-This repository provides the official code for the paper "title" [arxiv](https://)
+This repository provides the official code for the paper "title" [arxiv](https://) (To be released soon)
 
 ## Install
 
 ### Install requirements
 
-The code requires python3 and [Pytorch)(https://pytorch.org) using CUDA on Linux. Install other requirements:
+The code requires python3 and [Pytorch](https://pytorch.org) using CUDA on Linux. Install other requirements:
 
 ```
 pip install trimesh
