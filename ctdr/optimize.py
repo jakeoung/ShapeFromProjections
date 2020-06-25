@@ -93,8 +93,6 @@ def keep_topology(model, search_tree, displace_prev):
     
 
 def run(model, ds, niter, args, epoch_start=0, use_adam=True):
-    use_repulsion = False
-
     use_collision = True
     if args.data[-1]=="A" or ds.nmaterials == 2:
         use_collision = False
@@ -188,15 +186,7 @@ def run(model, ds, niter, args, epoch_start=0, use_adam=True):
 
             loss = data_loss + args.wedge * edge_loss + args.wlap * lap_loss + args.wflat * flat_loss
             
-            
-            if use_collision and use_repulsion:
-                wrep = 1e-3
-                loss += wrep * loss_repulsion
-
-#             v1, v2 = model.get_points()
-#             pt_dist = kaolin.metrics.point.directed_distance(v1, v2, True)
-#             loss += (pt_dist-0.1)**2
-            
+                        
             loss.backward()
             opt.step()
             
@@ -205,39 +195,7 @@ def run(model, ds, niter, args, epoch_start=0, use_adam=True):
         
             if use_collision == False:
                 continue
-            use_repulsion = False
-            
 
-            # intr, recv = keep_topology(model, search_tree, displace_prev)
-            # # intr, recv: vertices indices
-            # # if there are some intruders, we add repulsion term
-            # if intr is not None:
-            #     assert(0)
-            #     import kaolin
-            #     d12 = kaolin.metrics.point.directed_distance(intr, recv, False)
-            #     d21 = kaolin.metrics.point.directed_distance(recv, intr, False)
-                
-            #     d12 = d12*d12 
-            #     d21 = d21*d21
-            #     #kaolin.metrics.point.chamfer_distance(intr, recv)
-            #     #vertices = model.get_displaced_vertices()
-            #     #dist = torch.sum((vertices[intr,:]-vertices[recv,:])**2, dim=1)
-            #     #dist = torch.sqrt(dist)
-            #     #assert(0)
-            #     loss_repulsion = torch.mean(1. / (d12 + 1e-10))
-            #     loss_repulsion += torch.mean(1. / (d21 + 1e-10))
-            #     loss_repulsion *= 0.0001
-            #     print(f"loss_repulsion: {loss_repulsion}")	
-            #     # use_repulsion = True
-                
-#             v1, v2 = model.get_points()
-#             pt_dist = kaolin.metrics.point.directed_distance(v1, v2, False)
-#             print(f"min directed distance is {pt_dist.min()} shape: {pt_dist.shape}")
-            
-        
-#         if epoch == niter // 2:
-#             for param_group in opt.param_groups:
-#                 param_group['lr'] = args.lr * 0.5
 
         # if epoch % 20 == 0 or epoch == niter-1:            
         elpased_time = time.time() - start
