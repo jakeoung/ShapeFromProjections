@@ -15,7 +15,7 @@ pip install h5py
 pip install toml
 ```
 
-If there is any problem on pymeshfix, try to install a recent version of numpy (e.g., `pip install numpy==1.16.1`).
+If you have a problem on `pymeshfix`, try to install a recent version of numpy (e.g., `pip install numpy==1.16.1`).
 
 (Optional) To refine the mesh, `ctdr` requires another package for obtaining watertight. Compile the [watertight manifold code](https://github.com/hjwdzh/Manifold) and copy the running file `manifold` into `run` folder.
 
