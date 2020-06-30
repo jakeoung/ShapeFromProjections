@@ -67,3 +67,7 @@ and the final estimated mesh from noisy input:
 
 - [1] Huang, Jingwei, Hao Su, and Leonidas Guibas. Robust Watertight Manifold Surface Generation Method for ShapeNet Models., arXiv preprint arXiv:1802.01698 (2018).
 - [2] Chen et al. Learning to Predict 3D Objects with an  Interpolation-based Differentiable Renderer. NeurIPS, 2019. https://nv-tlabs.github.io/DIB-R/
+
+## Acknowledgement
+
+This was funded by EU Horizon 2020 MSCA Innovative Training Network [MUMMERING](https://www.mummering.eu) Grant Number 765604.
