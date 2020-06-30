@@ -20,7 +20,7 @@ parser.add_argument('-wflat', type=float, default=0.01, help='flatten loss param
 parser.add_argument('-b', type=int, default=0, help='batch size')
 parser.add_argument('-lr', type=float, default=0.01, help='step size')
 parser.add_argument('-nmu0', type=int, default=1, help='number of fixed mus. 1 means we dont optimize the background attenuation')
-parser.add_argument('-subdiv', type=int, default=3, help='number of fixed mus. 1 means we dont optimize the background attenuation')
+parser.add_argument('-subdiv', type=int, default=4, help='number of fixed mus. 1 means we dont optimize the background attenuation')
     
 #parser.add_argument('-eta', type=float, default=0., help='noise std on the sinogram data')
 #parser.add_argument('-K', type=int, default=30, help='number of projection angles')
