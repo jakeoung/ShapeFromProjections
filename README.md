@@ -35,15 +35,15 @@ python build.py build_ext --inplace
 To run the code, go to `run` folder and type:
 
 ```
-python ours.py -data 2starA -wedge 0 -wflat 0
+python ours.py -data 2starA
 ```
 
-where we set the regularization parameter for edge and flatting as 0. The default regularization parameter for Laplacian term is 10.0. You can see available data files in `data` folder. You just need to input the directory name after `-data`. You can see all the parameters by typing `python ours.py --help`. For example, if you want to impose Gaussian noise with relative level 0.3, then run `python ours.py -data 2spotA -eta 0.3`.
+where we run 2starA data. You can see available data files in `data` folder. You just need to input the directory name after `-data`. You can see all the parameters by typing `python ours.py --help`. For example, if you want to impose Gaussian noise with relative level 0.3, then run `python ours.py -data 2spotA -eta 0.3`.
 
 If you want to refine the mesh, as explained in the paper, you can run:
 
 ```
-python ours.py -data 2bob02A -niter0 60
+python ours.py -data 2bob02A -niter0 -60
 ```
 
 then, the method will refine the mesh at iteration 60, 120, 180. After finished, the results will be saved on `result` folder, including estimated projections, residuals and mesh files.
