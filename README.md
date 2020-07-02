@@ -10,14 +10,17 @@ The code requires python3 and [Pytorch](https://pytorch.org) using CUDA on Linux
 
 ```
 pip install trimesh
-pip install pymeshfix
 pip install h5py
 pip install toml
 ```
 
 If you have a problem on `pymeshfix`, try to install a recent version of numpy (e.g., `pip install numpy==1.16.1`).
 
-(Optional) To refine the mesh, `ctdr` requires another package for obtaining watertight. Compile the [watertight manifold code](https://github.com/hjwdzh/Manifold) and copy the running file `manifold` into `run` folder.
+(Optional) To refine the mesh, `ctdr` requires another package for obtaining watertight. Compile the [watertight manifold code](https://github.com/hjwdzh/Manifold) and copy the running file `manifold` into `run` folder. Lastly, you need to install
+
+```
+pip install pymeshfix
+```
 
 ### Install ctdr package
 
@@ -40,7 +43,7 @@ python ours.py -data 2starA
 
 where we run 2starA data. You can see available data files in `data` folder. You just need to input the directory name after `-data`. You can see all the parameters by typing `python ours.py --help`. For example, if you want to impose Gaussian noise with relative level 0.3, then run `python ours.py -data 2spotA -eta 0.3`.
 
-If you want to refine the mesh, as explained in the paper, you can run:
+If you want to refine the mesh (you should first install the required packages), as explained in the paper except for 2starA data, you can run:
 
 ```
 python ours.py -data 2bob02A -niter0 -60
