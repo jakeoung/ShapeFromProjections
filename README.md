@@ -35,6 +35,8 @@ python build.py build_ext --inplace
 
 ## Usage
 
+For the simple example, please refer to `ctdr.ipynb` notebook.
+
 To run the code, go to `run` folder and type:
 
 ```
