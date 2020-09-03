@@ -33,9 +33,11 @@ cd ctdr/cuda
 python build.py build_ext --inplace
 ```
 
-## Usage
+## Simple example through Colab notebook
 
-For the simple example, please refer to `ctdr_toy_example.ipynb` notebook.
+Please refer to `ctdr_toy_example.ipynb` notebook.
+
+## Usage
 
 To run the code, go to `run` folder and type:
 
