@@ -4,7 +4,7 @@ This repository provides the official code for the preprint [Shape from Projecti
 
 ## Simple example through Colab notebook
 
-Please refer to `ctdr_toy_example.ipynb` notebook.
+Please refer to `ctdr_toy_example.ipynb` notebook or directly open [this Colab link](https://colab.research.google.com/github/jakeoung/ShapeFromProjections/blob/master/ctdr_toy_example.ipynb).
 
 
 ## Install
