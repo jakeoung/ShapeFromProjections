@@ -18,7 +18,7 @@ if __name__ == '__main__':
         description='CTDR"',
         version='0.9.0',
         name='ctdrm', # not module name
-        packages=find_packages(include=['ctdr.*']),
+        packages=find_packages(include=['ctdr','ctdr.*']),
         zip_safe=True,
         install_requires=INSTALL_REQUIREMENTS,
         ext_modules=ext_modules,
