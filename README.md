@@ -1,6 +1,6 @@
 # ShapeFromProjections
 
-This repository provides the official code for the preprint [Shape from Projections via Differentiable Forward Projector for Computed Tomography](http://arxiv.org/abs/2006.16120). The method estimates 3D shapes represented by a triangular mesh, directly from tomographic projection data. The basic idea of the method is to view tomographic reconstruction as a rendering process and extend a differentiable rasterizer [2] to optimize 3D shapes. Some parts of codes are ported from [2] with the comments of copyright form.
+This repository provides the official code for the paper [Shape from Projections via Differentiable Forward Projector for Computed Tomography](http://arxiv.org/abs/2006.16120) published in Ultramicroscopy. The method estimates 3D shapes represented by a triangular mesh, directly from tomographic projection data. The basic idea of the method is to view tomographic reconstruction as a rendering process and extend a differentiable rasterizer [2] to optimize 3D shapes. Some parts of codes are ported from [2] with the comments of copyright form.
 
 ## Simple example through Colab notebook
 
