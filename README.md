@@ -71,6 +71,10 @@ and the final estimated mesh from noisy input:
 
 ![](media/final.png)
 
+## Simulate projections from a 3D model obj (Todo)
+
+See `run/simulate_projections.py` to generate projections [nangles x height x width] from .obj file
+
 ## Reference
 
 - [1] Huang, Jingwei, Hao Su, and Leonidas Guibas. Robust Watertight Manifold Surface Generation Method for ShapeNet Models., arXiv preprint arXiv:1802.01698 (2018).
