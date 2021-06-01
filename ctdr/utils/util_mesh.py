@@ -157,13 +157,13 @@ def load_template(fname):
             if len(components) < 3:
                 continue
             
-            if components[0] == 'v':
+            if components[0:2] == 'v ':
                 vertices.append([float(components[1]), float(components[2]), float(components[3])])
 
-            elif components[0] == 'f':
+            elif components[0:2] == 'f ':
                 faces.append([int(components[1]), int(components[2]), int(components[3])])
 
-            elif components[0] == 'o':
+            elif components[0:2] == 'o ':
                 object_cnt += 1
                 labels_in.append(int(components[2]))
                 labels_out.append(int(components[3]))
