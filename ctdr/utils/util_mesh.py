@@ -154,16 +154,19 @@ def load_template(fname):
 
         for line in lines:
             components = line.split()
-            if len(components) < 3:
+            if len(components) < 4:
                 continue
             
-            if components[0:2] == 'v ':
+            if line[0:2] == 'v ':
                 vertices.append([float(components[1]), float(components[2]), float(components[3])])
 
-            elif components[0:2] == 'f ':
-                faces.append([int(components[1]), int(components[2]), int(components[3])])
+            elif line[0:2] == 'f ':
+                if components[1].find("/") < 0:
+                    faces.append([int(components[1]), int(components[2]), int(components[3])])
+                else:
+                    faces.append([int(components[1].split("/")[0]), int(components[2].split("/")[0]), int(components[3].split("/")[0])])
 
-            elif components[0:2] == 'o ':
+            elif line[0:2] == 'o ':
                 object_cnt += 1
                 labels_in.append(int(components[2]))
                 labels_out.append(int(components[3]))
