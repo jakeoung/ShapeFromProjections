@@ -56,7 +56,11 @@ class FP(nn.Module):
         self.proj_geom = proj_geom
         self.labels_fx2 = labels.cuda()
         
-        self.max_sino_val = proj_geom["DetectorColCount"]*proj_geom["DetectorSpacingX"]*100
+        if self.proj_geom['type'] == 'parallel3d_vec':
+            self.max_sino_val = proj_geom["DetectorColCount"]*proj_geom["DetectorSpacingX"]*3
+        else:
+            self.max_sino_val = proj_geom["DetectorColCount"]*proj_geom["DetectorSpacingX"]*100
+
         self.vecs = torch.tensor(proj_geom['Vectors'], dtype=dtype).cuda()
 #             self.DetS = self.Vectors[:,3:6] - 0.5*proj_geom['DetectorRowCount']*self.Vectors[:,9:12] - 0.5*proj_geom['DetectorColCount']*self.Vectors[:, 6:9]
         
@@ -67,7 +71,7 @@ class FP(nn.Module):
         
         self.det_pos = self.vecs[:,3:6]
         if self.proj_geom['type'] == 'parallel3d_vec':
-            self.det_pos = - MAX_SRC_ORIGIN_PARALLEL * self.vecs[:,0:3]
+            self.det_pos = - self.max_sino_val * self.vecs[:,0:3]
 
         self.dtype = dtype
             
@@ -124,12 +128,12 @@ class FP(nn.Module):
             R_bxvx3_norm = - S_bxvx3.clone()
             S_bxvx3 = verts_bxvx3
             NS_bxv = torch.sum(N_bx2.unsqueeze(1).expand(-1,v,-1)*S_bxvx3[:,:,:2], dim=2)
-            t_bxv = NS_bxv + MAX_SRC_ORIGIN_PARALLEL
+            t_bxv = NS_bxv + self.max_sino_val
             
             NR_bxv = torch.sum(N_bx2.unsqueeze(1).expand(-1,v,-1) * R_bxvx3_norm[:,:,0:2], dim=2)
             t_bxv = - t_bxv / ( NR_bxv )
             len_vert_bxvx1 = t_bxv.unsqueeze(2)
-            #assert(len_vert_bxvx1.min() > 0.)
+            assert(len_vert_bxvx1.min() > 0.)
             
         else:
             R_bxvx3 = verts_bxvx3 - S_bxvx3
@@ -191,8 +195,6 @@ class FP(nn.Module):
         
         self.proj, self.len, self.front_facing = proj_bxfx6, len_bxfx3, front_facing_bxfx1    
         
-#         assert( (proj_bxfx6 > -100).all() )
-
         phat = self.rasterize(proj_bxfx6, len_bxfx3, front_facing_bxfx1,
                              self.labels_fx2, mus_n, self.height, self.width, self.max_sino_val)
         

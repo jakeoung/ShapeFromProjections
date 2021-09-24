@@ -4,7 +4,7 @@ import torch.nn as nn
 from ctdr.function.rasterizer import Rasterizer
 from ctdr.utils.projection import compute_P, compute_M
 from scipy.spatial.transform import Rotation
-from ctdr.nn.fp import get_valid_mask
+from ctdr.nn.fp_vecs import get_valid_mask
 
 class FP(nn.Module):
     """Forward projection module

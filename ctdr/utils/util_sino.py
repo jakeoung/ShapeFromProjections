@@ -26,14 +26,14 @@ def read_from_toml(fname_toml, nangles=None):
     return dic
 
 
-def read_proj_info(fname, nangles=None, convert_vec=True):
+def read_proj_info(fname, nangles=None, convert_vec=False):
     """
     fname can be toml (astra proj_geom) or pkl (astra-style vectors)
     """
     
     if fname[-4:] == 'toml':
         proj_geom = read_from_toml(fname, nangles=nangles)
-        if proj_geom['type'] == 'cone' and convert_vec:
+        if proj_geom['type'] == 'cone' or convert_vec:
             proj_geom = geom_2vec(proj_geom)
 
     elif fname[-3:] == 'pkl':
@@ -192,6 +192,8 @@ def geom_2vec(proj_geom):
         proj_geom_out['DetectorRowCount'] = proj_geom['DetectorRowCount']
         proj_geom_out['DetectorColCount'] = proj_geom['DetectorColCount']
         proj_geom_out['Vectors'] = vectors
+        proj_geom_out['DetectorSpacingY'] = proj_geom['DetectorSpacingY']
+        proj_geom_out['DetectorSpacingX'] = proj_geom['DetectorSpacingX']
         
     else:
         raise ValueError(

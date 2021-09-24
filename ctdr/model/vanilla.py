@@ -60,7 +60,7 @@ class Model(nn.Module):
         self.init_register(mus, mus_fixed_no, use_center_param, use_disp_param)
         
         if proj_geom['type'][-3:] == 'vec':
-            from ctdr.nn.fp_cone import FP
+            from ctdr.nn.fp_vecs import FP
             self.fp = FP(proj_geom, self.labels, self.dtype)
             self.nangles = proj_geom['Vectors'].shape[0]
         else:
