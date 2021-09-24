@@ -62,7 +62,7 @@ class FP(nn.Module):
         self.rasterize = Rasterizer().apply
         self.angles = torch.tensor(proj_geom['ProjectionAngles'], dtype=dtype).cuda()
         
-    def forward(self, verts_vx3, faces_fx3, idx_angles, mus_n):
+    def forward(self, verts_vx3, faces_fx3, idx_angles, mus_n, backprop=True):
         """
         Args:
             - verts_vx3 (tensor, float32 [num_pt x 3])
@@ -160,7 +160,7 @@ class FP(nn.Module):
         self.proj, self.len, self.front_facing = proj_bxfx6, len_bxfx3, front_facing_bxfx1
         
         phat = self.rasterize(proj_bxfx6, len_bxfx3, front_facing_bxfx1,
-                             self.labels_fx2, mus_n, self.height, self.width, self.max_sino_val)
+                             self.labels_fx2, mus_n, self.height, self.width, self.max_sino_val, backprop)
         
         phat = phat.squeeze()
         mask_valid = get_valid_mask(phat, self.max_sino_val)

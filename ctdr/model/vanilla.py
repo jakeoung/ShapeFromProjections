@@ -137,14 +137,14 @@ class Model(nn.Module):
     #-------------------------------------------------------
     # forward
     #-------------------------------------------------------
-    def forward(self, idx_angles, wedge=0.):
+    def forward(self, idx_angles, wedge=0., backprop=True):
         vertices = self.pretransform(True)
         vertices = self.deform(vertices, None)        
         
         if self.mus_fixed_no == 1:
             self.mus.data[0] = self.p_min
             
-        phat, mask_valid = self.fp.forward(vertices, self.faces, idx_angles, self.mus)
+        phat, mask_valid = self.fp.forward(vertices, self.faces, idx_angles, self.mus, backprop)
         
         edge_loss = util_fun.compute_edge_length(vertices, self.faces) if wedge > 0. else 0.
         lap_loss = 0. if self.use_lap_loss==False else self.laplacian_loss(vertices).mean()

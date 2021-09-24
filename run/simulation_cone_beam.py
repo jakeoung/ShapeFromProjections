@@ -8,7 +8,7 @@ ddata = "../data/2testA/"
 ftoml = f"{ddata}/proj_geom.toml"
 nangles = 30
 
-mode = "cone"
+mode = "parallel"
 
 if mode == "cone": # see cone_geometry.jpg
     with open(ftoml, "w") as target:
@@ -78,7 +78,7 @@ model.vertices[:,2] = normalize(model.vertices[:,2])
 # print(model.mus.dtype)
 
 # Generate projections
-out = model(torch.arange(nangles), 0.0)
+out = model(torch.arange(nangles), 0.0, backprop=False)
 proj = out[0].detach().cpu().numpy() # [nangles x height x width]
 
 # Show the projection image

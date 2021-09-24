@@ -10,7 +10,7 @@ dtype_int=torch.int32
 class Rasterizer(Function):
     
     @staticmethod
-    def forward(ctx, p_bxfx6, len_bxfx3, front_facing_bxfx1, labels_fx2, mus_n, H, W, max_sino_val):
+    def forward(ctx, p_bxfx6, len_bxfx3, front_facing_bxfx1, labels_fx2, mus_n, H, W, max_sino_val, backprop):
         """
         p_bxfx6 : projections on 2D plane
         """
@@ -54,9 +54,8 @@ class Rasterizer(Function):
         temp_int,
         im_bxhxwx1, 1, max_sino_val)
         
-        ## if backpropagation is not needed, stop
-        # return im_bxhxwx1
-        
+        if backprop == False:
+            return im_bxhxwx1
                 
         # -----------------------------------------
         # compute the total number of visible faces

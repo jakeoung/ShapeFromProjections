@@ -67,7 +67,7 @@ class FP(nn.Module):
         self.height = self.proj_geom['DetectorRowCount']
         self.width = self.proj_geom['DetectorColCount']
         
-        self.rasterize = Rasterizer(self.height, self.width, 0).apply
+        self.rasterize = Rasterizer().apply
         
         self.det_pos = self.vecs[:,3:6]
         if self.proj_geom['type'] == 'parallel3d_vec':
@@ -77,7 +77,7 @@ class FP(nn.Module):
             
         # normal vector for the detector plane
         
-    def forward(self, verts_vx3, faces_fx3, idx_angles, mus_n):
+    def forward(self, verts_vx3, faces_fx3, idx_angles, mus_n, backprop=True):
         # raise NotImplemented()
         #------------------------------------------------
         # compute normal vector for each face
@@ -198,7 +198,7 @@ class FP(nn.Module):
         self.proj, self.len, self.front_facing = proj_bxfx6, len_bxfx3, front_facing_bxfx1    
         
         phat = self.rasterize(proj_bxfx6, len_bxfx3, front_facing_bxfx1,
-                             self.labels_fx2, mus_n, self.height, self.width, self.max_sino_val)
+                             self.labels_fx2, mus_n, self.height, self.width, self.max_sino_val, backprop)
         
         phat = phat.squeeze()
         mask_valid = get_valid_mask(phat, self.max_sino_val)
