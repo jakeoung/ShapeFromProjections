@@ -125,6 +125,8 @@ class FP(nn.Module):
             # for the parallel case:
             # we consider the 3D vertice points as the sources
             # t = (N . S + dist_to_detector_center)
+            N_bx2 /= torch.sqrt(N_bx2[:,0:1]**2 + N_bx2[:,1:2]**2)
+
             R_bxvx3_norm = - S_bxvx3.clone()
             S_bxvx3 = verts_bxvx3
             NS_bxv = torch.sum(N_bx2.unsqueeze(1).expand(-1,v,-1)*S_bxvx3[:,:,:2], dim=2)
@@ -133,7 +135,7 @@ class FP(nn.Module):
             NR_bxv = torch.sum(N_bx2.unsqueeze(1).expand(-1,v,-1) * R_bxvx3_norm[:,:,0:2], dim=2)
             t_bxv = - t_bxv / ( NR_bxv )
             len_vert_bxvx1 = t_bxv.unsqueeze(2)
-            assert(len_vert_bxvx1.min() > 0.)
+            # assert(len_vert_bxvx1.min() > 0.)
             
         else:
             R_bxvx3 = verts_bxvx3 - S_bxvx3
