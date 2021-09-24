@@ -104,4 +104,4 @@ class Rasterizer(Function):
             imwei_3vf, p_bxfx6, len_bxfx3, labels_fx2, mus_n, front_facing_bxfx1,
             dldp, dldf, dldmu)
 
-        return dldp, dldf, None, None, dldmu, None, None, None
+        return dldp, dldf, None, None, dldmu, None, None, None, None
