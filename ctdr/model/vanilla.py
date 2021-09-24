@@ -4,7 +4,7 @@ import torch.nn as nn
 import trimesh
 from ctdr.utils import util_vis, util_mesh, util_fun
 from ctdr.nn import softras_loss
-from ctdr.function.rasterizer import dtype
+# from ctdr.function.rasterizer import dtype
 
 import torch.nn.functional as F
 
@@ -24,10 +24,11 @@ class Model(nn.Module):
         >>> 
 
     """
-    def __init__(self, ftemplate, proj_geom, nmaterials, mus=None, mus_fixed_no=1, use_disp_param=True, use_center_param=False, wlap=0., wflat=0.):
+    def __init__(self, ftemplate, proj_geom, nmaterials, mus=None, mus_fixed_no=1, use_disp_param=True, use_center_param=False, wlap=0., wflat=0., dtype=torch.float32):
         super(Model, self).__init__()
         
         self.p_min = 0.
+        self.dtype = dtype
         
         self.nmaterials = nmaterials
         vertices, faces, labels_v, labels_f = util_mesh.load_template(ftemplate)
@@ -42,7 +43,7 @@ class Model(nn.Module):
 #             vertices = util_mesh.normalize_min_max(vertices)
         
         # register template (not variables)
-        self.register_buffer('vertices', torch.tensor(vertices, dtype=dtype))
+        self.register_buffer('vertices', torch.tensor(vertices, dtype=self.dtype))
         self.register_buffer('faces', torch.tensor(faces, dtype=torch.int64))
         
         # register label information for each face
@@ -58,14 +59,15 @@ class Model(nn.Module):
         self.use_flat_loss = True if wflat > 0. else False
         self.init_register(mus, mus_fixed_no, use_center_param, use_disp_param)
         
-        # if proj_geom['type'][-3:] == 'vec':
-        #     from ctdr.nn.fp import FP
-        #     self.fp = FP(proj_geom, self.labels)
-        #     self.nangles = len(proj_geom['vecs'].shape[0])
-        # else:
-        from ctdr.nn.fp_opengl import FP
-        self.fp = FP(proj_geom, self.labels)
-        self.nangles = len(proj_geom['ProjectionAngles'])
+        if proj_geom['type'][-3:] == 'vec':
+            from ctdr.nn.fp_cone import FP
+            self.fp = FP(proj_geom, self.labels, self.dtype)
+            self.nangles = proj_geom['Vectors'].shape[0]
+        else:
+            from ctdr.nn.fp_opengl import FP
+            self.fp = FP(proj_geom, self.labels, self.dtype)
+            self.nangles = len(proj_geom['ProjectionAngles'])
+        
         
     #-------------------------------------------------------
     #-------------------------------------------------------
@@ -74,28 +76,28 @@ class Model(nn.Module):
         if use_center_param:
             # center as a parameter (rotation can be added as well)
             self.register_parameter('center', \
-                nn.Parameter(torch.zeros([1, 3], dtype=dtype) ) )
+                nn.Parameter(torch.zeros([1, 3], dtype=self.dtype) ) )
         else:
-            self.register_buffer('center', torch.zeros([1, 3], dtype=dtype))
+            self.register_buffer('center', torch.zeros([1, 3], dtype=self.dtype))
 
         # old_code: for each object, use different centers
-#             self.register_parameter('center', nn.Parameter(torch.zeros([1, 3*self.nmaterials], dtype=dtype) ) )
+#             self.register_parameter('center', nn.Parameter(torch.zeros([1, 3*self.nmaterials], dtype=self.dtype) ) )
 #             self.register_buffer('labels_v', torch.tensor(labels_v))
         
         if use_disp_param:
             self.register_parameter('displace', \
-            nn.Parameter(torch.zeros(self.vertices.shape, dtype=dtype)))
+            nn.Parameter(torch.zeros(self.vertices.shape, dtype=self.dtype)))
         else:
             self.register_buffer('displace', \
                                  torch.zeros_like(self.vertices))
             
         if mus_fixed_no == self.nmaterials:
             # mus is not parameter
-            self.register_buffer('mus', torch.tensor(mus, dtype=dtype))
+            self.register_buffer('mus', torch.tensor(mus, dtype=self.dtype))
         else:
             print('set mu as parameters')
             self.register_parameter('mus', \
-                nn.Parameter(torch.tensor(mus, dtype=dtype)))
+                nn.Parameter(torch.tensor(mus, dtype=self.dtype)))
             
         #------------------------------------------------
         # register loss
@@ -111,7 +113,7 @@ class Model(nn.Module):
     
     def register_scale(self):
         self.register_parameter('scale', \
-                nn.Parameter(torch.ones([1, 3], dtype=dtype)))
+                nn.Parameter(torch.ones([1, 3], dtype=self.dtype)))
     
     def pretransform(self, translation=False, rot=False, ):
         vert = self.vertices
@@ -130,12 +132,6 @@ class Model(nn.Module):
         else: # if disp is known (NN)
             vertices = verts + disp
 
-#         else:
-            #- we can translate for each object but we might lose the fixed topology. Hm:P
-            # substract center for each material
-#             for m in range(self.nmaterials):
-#                 vertices[self.labels_v==m,:] -= \
-#                         self.center[:,3*m:3*(m+1)]        
         return vertices
     
     #-------------------------------------------------------
@@ -213,8 +209,8 @@ class Model(nn.Module):
             b1 = torch.sum(p1hat*p_cuda)
             b2 = torch.sum(p2hat*p_cuda)
 
-            A = torch.tensor([[a11,a12],[a12,a22]], dtype=dtype)
-            b = torch.tensor([b1,b2], dtype=dtype)
+            A = torch.tensor([[a11,a12],[a12,a22]], dtype=self.dtype)
+            b = torch.tensor([b1,b2], dtype=self.dtype)
 
             mu_est = torch.pinverse(A).matmul(b)
             self.mus.data[1] = mu_est[0]
@@ -256,8 +252,8 @@ class Model(nn.Module):
             b2 = torch.sum(p2hat*p_cuda)
             b3 = torch.sum(p3hat*p_cuda)
 
-            A = torch.tensor([[a11,a12,a13],[a12,a22,a23],[a13,a23,a33]], dtype=dtype)
-            b = torch.tensor([b1,b2,b3], dtype=dtype)
+            A = torch.tensor([[a11,a12,a13],[a12,a22,a23],[a13,a23,a33]], dtype=self.dtype)
+            b = torch.tensor([b1,b2,b3], dtype=self.dtype)
 
             mu_est = torch.pinverse(A).matmul(b)
             self.mus.data[1] = mu_est[0]

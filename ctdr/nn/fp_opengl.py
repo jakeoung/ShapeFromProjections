@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 import torch.nn as nn
-from ctdr.function.rasterizer import Rasterizer, dtype
+from ctdr.function.rasterizer import Rasterizer
 from ctdr.utils.projection import compute_P, compute_M
 from scipy.spatial.transform import Rotation
 from ctdr.nn.fp import get_valid_mask
@@ -30,7 +30,7 @@ class FP(nn.Module):
     Examples:
         >>> 
     """
-    def __init__(self, proj_geom, labels):
+    def __init__(self, proj_geom, labels, dtype=torch.float32):
         super(FP, self).__init__()
         
         self.proj_geom = proj_geom

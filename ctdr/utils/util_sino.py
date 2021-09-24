@@ -158,6 +158,8 @@ def geom_2vec(proj_geom):
         proj_geom_out['DetectorRowCount'] = proj_geom['DetectorRowCount']
         proj_geom_out['DetectorColCount'] = proj_geom['DetectorColCount']
         proj_geom_out['Vectors'] = vectors
+        proj_geom_out['DetectorSpacingY'] = proj_geom['DetectorSpacingY']
+        proj_geom_out['DetectorSpacingX'] = proj_geom['DetectorSpacingX']
 
     # PARALLEL
     elif proj_geom['type'] == 'parallel3d':

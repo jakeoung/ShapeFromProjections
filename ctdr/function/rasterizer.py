@@ -4,7 +4,7 @@ import sys
 sys.path.append('../ctdr/cuda')
 import cuda_diff_fp
 
-dtype=torch.float32
+# dtype=torch.float32
 dtype_int=torch.int32
 
 class Rasterizer(Function):
@@ -14,7 +14,8 @@ class Rasterizer(Function):
         """
         p_bxfx6 : projections on 2D plane
         """
-        
+        dtype = p_bxfx6.dtype
+
         B = p_bxfx6.shape[0]
         F = p_bxfx6.shape[1]
         

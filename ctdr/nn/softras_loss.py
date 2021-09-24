@@ -26,11 +26,10 @@ import torch
 import torch.nn as nn
 import numpy as np
 
-from ctdr.function.rasterizer import dtype
-
+# from ctdr.function.rasterizer import dtype
 
 class LaplacianLoss(nn.Module):
-    def __init__(self, vertex, faces, average=False):
+    def __init__(self, vertex, faces, average=False, dtype=torch.float32):
         super(LaplacianLoss, self).__init__()
         self.nv = vertex.size(0)
         self.nf = faces.size(0)
