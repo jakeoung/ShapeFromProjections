@@ -8,7 +8,7 @@ ddata = "../data/2testA/"
 ftoml = f"{ddata}/proj_geom.toml"
 nangles = 30
 
-mode = "parallel"
+mode = "cone"
 
 if mode == "cone": # see cone_geometry.jpg
     with open(ftoml, "w") as target:
