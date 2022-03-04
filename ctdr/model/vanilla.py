@@ -59,6 +59,9 @@ class Model(nn.Module):
         self.use_flat_loss = True if wflat > 0. else False
         self.init_register(mus, mus_fixed_no, use_center_param, use_disp_param)
         
+        if proj_geom['type'] == 'cone':
+            print("proj_geom type=cone is not supported. It should be cone_vec")
+        
         if proj_geom['type'][-3:] == 'vec':
             from ctdr.nn.fp_vecs import FP
             self.fp = FP(proj_geom, self.labels, self.dtype)
